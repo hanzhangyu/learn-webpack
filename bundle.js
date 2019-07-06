@@ -163,7 +163,7 @@
             return aFnVar;
         });
         /* harmony import */
-        var _b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./b */ "./src/b.js");
+        var _b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./b */ "./src/b.js"); // 这里调用了require('b')，aFn因为作用域提升getter时已存在，而aFnVar还是为空
 
         Object(_b__WEBPACK_IMPORTED_MODULE_0__["default"])();
 
