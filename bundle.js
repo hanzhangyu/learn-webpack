@@ -1,16 +1,16 @@
 /******/
-(function (modules) { // webpackBootstrap
+(function (modules) { // webpackBootstrap webpack启动方法
     /******/ 	// The module cache
     /******/
-    var installedModules = {};
+    var installedModules = {}; //  缓存
     /******/
     /******/ 	// The require function
     /******/
-    function __webpack_require__(moduleId) {
+    function __webpack_require__(moduleId) { // require函数
         /******/
         /******/ 		// Check if module is in cache
         /******/
-        if (installedModules[moduleId]) {
+        if (installedModules[moduleId]) { // 如果模块已经初始化了直接返回
             /******/
             return installedModules[moduleId].exports;
             /******/
@@ -18,15 +18,15 @@
         /******/ 		// Create a new module (and put it into the cache)
         /******/
         var module = installedModules[moduleId] = {
-            /******/            i: moduleId,
-            /******/            l: false,
+            /******/            i: moduleId, // id
+            /******/            l: false, // loaded
             /******/            exports: {}
             /******/
         };
         /******/
         /******/ 		// Execute the module function
         /******/
-        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__); // 初始化require模块
         /******/
         /******/ 		// Flag the module as loaded
         /******/
@@ -42,17 +42,17 @@
     /******/
     /******/ 	// expose the modules object (__webpack_modules__)
     /******/
-    __webpack_require__.m = modules;
+    __webpack_require__.modules = modules;
     /******/
     /******/ 	// expose the module cache
     /******/
-    __webpack_require__.c = installedModules;
+    __webpack_require__.moduleCaches = installedModules;
     /******/
     /******/ 	// define getter function for harmony exports
     /******/
-    __webpack_require__.d = function (exports, name, getter) {
+    __webpack_require__.definePropertyGetter = function (exports, name, getter) { // 定义一个getter函数，用来保证输出的是值的引用，并保证不能被外部模块修改
         /******/
-        if (!__webpack_require__.o(exports, name)) {
+        if (!__webpack_require__.hasOwnProperty(exports, name)) {
             /******/
             Object.defineProperty(exports, name, {enumerable: true, get: getter});
             /******/
@@ -62,15 +62,15 @@
     /******/
     /******/ 	// define __esModule on exports
     /******/
-    __webpack_require__.r = function (exports) {
+    __webpack_require__.markAsESModule = function (exports) {
         /******/
         if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
             /******/
-            Object.defineProperty(exports, Symbol.toStringTag, {value: 'Module'});
+            Object.defineProperty(exports, Symbol.toStringTag, {value: 'Module'}); // Object.prototype.toString.call(exports) === '[object Module]'
             /******/
         }
         /******/
-        Object.defineProperty(exports, '__esModule', {value: true});
+        Object.defineProperty(exports, '__esModule', {value: true}); // 表示为__esModule
         /******/
     };
     /******/
@@ -90,11 +90,11 @@
         /******/
         var ns = Object.create(null);
         /******/
-        __webpack_require__.r(ns);
+        __webpack_require__.markAsESModule(ns);
         /******/
         Object.defineProperty(ns, 'default', {enumerable: true, value: value});
         /******/
-        if (mode & 2 && typeof value != 'string') for (var key in value) __webpack_require__.d(ns, key, function (key) {
+        if (mode & 2 && typeof value != 'string') for (var key in value) __webpack_require__.definePropertyGetter(ns, key, function (key) {
             return value[key];
         }.bind(null, key));
         /******/
@@ -114,7 +114,7 @@
                 return module;
             };
         /******/
-        __webpack_require__.d(getter, 'a', getter);
+        __webpack_require__.definePropertyGetter(getter, 'a', getter);
         /******/
         return getter;
         /******/
@@ -122,7 +122,7 @@
     /******/
     /******/ 	// Object.prototype.hasOwnProperty.call
     /******/
-    __webpack_require__.o = function (object, property) {
+    __webpack_require__.hasOwnProperty = function (object, property) { // object.hasOwnProperty(property)
         return Object.prototype.hasOwnProperty.call(object, property);
     };
     /******/
@@ -137,17 +137,29 @@
     /******/
 })
 /************************************************************************/
-/******/({
+/******/({ // {"./src/a.js: function(module,__webpack_exports__,__webpack_require__){eval(...)}", ...}
 
     /***/ "./src/a.js":
     /*!******************!*\
       !*** ./src/a.js ***!
       \******************/
-    /*! exports provided: aVal, default */
+    /*! exports provided: a, default */
     /***/ (function (module, __webpack_exports__, __webpack_require__) {
 
         "use strict";
-        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"aVal\", function() { return aVal; });\nlet aVal = 1;\r\n\r\nPromise.resolve().then(() => {\r\n  aVal = 2;\r\n});\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (2);\r\n\n\n//# sourceURL=webpack:///./src/a.js?");
+        // eval("__webpack_require__.markAsESModule(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.definePropertyGetter(__webpack_exports__, \"aVal\", function() { return aVal; });\nlet aVal = 1;\r\n\r\nPromise.resolve().then(() => {\r\n  aVal = 2;\r\n});\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (2);\r\n\n\n//# sourceURL=webpack:///./src/a.js?");
+        // region eval
+        __webpack_require__.markAsESModule(__webpack_exports__);
+        /* harmony export (binding) */ __webpack_require__.definePropertyGetter(__webpack_exports__, "aVal", function() { return aVal; });
+        let aVal = 1;
+
+        Promise.resolve().then(() => {
+            aVal = 2;
+        });
+
+        /* harmony default export */ __webpack_exports__["default"] = (2);
+        //# sourceURL=webpack:///./src/a.js?
+        // endregion
 
         /***/
     }),
@@ -157,11 +169,32 @@
       !*** ./src/index.js ***!
       \**********************/
     /*! no exports provided */
-    /***/ (function (module, __webpack_exports__, __webpack_require__) {
+    /***/ (function (module, __webpack_exports__, __webpack_require__) { // this === __webpack_exports__
 
         "use strict";
-        eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _a_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a.js */ \"./src/a.js\");\n\n\nconsole.log(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\nupView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 1\nsetTimeout(() => {\n  upView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 2\n}, 2000);\n\nfunction upView(text) {\n  document.getElementById(\"app\").innerText = text;\n}\n\n\n//# sourceURL=webpack:///./src/index.js?");
+        // eval("__webpack_require__.markAsESModule(__webpack_exports__);\n/* harmony import */ var _a_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a.js */ \"./src/a.js\");\n\n\nconsole.log(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\nupView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 1\nsetTimeout(() => {\n  upView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 2\n}, 2000);\n\nfunction upView(text) {\n  document.getElementById(\"app\").innerText = text;\n}\n\n\n//# sourceURL=webpack:///./src/index.js?");
+        // region eval
+        __webpack_require__.markAsESModule(__webpack_exports__);
+        /* harmony import */ var _a_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a.js */ "./src/a.js");
+        // module a 为：
+        //   Module {default: 2, __esModule: true, Symbol(Symbol.toStringTag): "Module"}
+        //     aVal: 1
+        //     default: 2
+        //     Symbol(Symbol.toStringTag): "Module"
+        //     __esModule: true
+        //     get aVal: ƒ ()
 
+        console.log(_a_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+        upView(_a_js__WEBPACK_IMPORTED_MODULE_0__["aVal"]); // 1
+        setTimeout(() => {
+            upView(_a_js__WEBPACK_IMPORTED_MODULE_0__["aVal"]); // 2
+        }, 2000);
+
+        function upView(text) {
+            document.getElementById("app").innerText = text;
+        }
+        // endregion
         /***/
     })
 
