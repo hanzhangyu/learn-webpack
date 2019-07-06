@@ -8,5 +8,5 @@ setTimeout(() => {
 }, 2000);
 
 function upView(text) {
-  document.getElementById("app").innerText = text;
+  console.log(text)
 }
