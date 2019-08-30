@@ -26,7 +26,7 @@
         /******/
         /******/ 		// Execute the module function
         /******/
-        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__); // 初始化require模块
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__); // 初始化require模块，并绑定 this 为 module.exports
         /******/
         /******/ 		// Flag the module as loaded
         /******/
