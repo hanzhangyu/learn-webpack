@@ -94,7 +94,31 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"aVal\", function() { return aVal; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"aFn\", function() { return aFn; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"aFnVar\", function() { return aFnVar; });\n/* harmony import */ var _b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./b */ \"./src/b.js\");\n\r\n\r\nObject(_b__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\r\n\r\nlet aVal = 1;\r\n\r\nPromise.resolve().then(() => {\r\n  aVal = 2;\r\n});\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (2);\r\n\r\nfunction aFn() {\r\n    console.log('afn');\r\n}\r\n\r\nvar aFnVar = () => {\r\n    console.log('aFnVar');\r\n};\r\n\n\n//# sourceURL=webpack:///./src/a.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "aVal", function() { return aVal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "aFn", function() { return aFn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "aFnVar", function() { return aFnVar; });
+/* harmony import */ var _b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./b */ "./src/b.js");
+
+
+Object(_b__WEBPACK_IMPORTED_MODULE_0__["default"])();
+
+let aVal = 1;
+
+Promise.resolve().then(() => {
+  aVal = 2;
+});
+
+/* harmony default export */ __webpack_exports__["default"] = (2);
+
+function aFn() {
+    console.log('afn');
+}
+
+var aFnVar = () => {
+    console.log('aFnVar');
+};
+
 
 /***/ }),
 
@@ -106,7 +130,21 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a */ \"./src/a.js\");\n\r\n\r\nObject(_a__WEBPACK_IMPORTED_MODULE_0__[\"aFn\"])();\r\ntry {\r\n    Object(_a__WEBPACK_IMPORTED_MODULE_0__[\"aFnVar\"])();\r\n} catch (e) {\r\n    console.error(e);\r\n}\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n    console.log('b default')\r\n});\r\n\n\n//# sourceURL=webpack:///./src/b.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a */ "./src/a.js");
+
+
+Object(_a__WEBPACK_IMPORTED_MODULE_0__["aFn"])();
+try {
+    Object(_a__WEBPACK_IMPORTED_MODULE_0__["aFnVar"])();
+} catch (e) {
+    console.error(e);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (() => {
+    console.log('b default')
+});
+
 
 /***/ }),
 
@@ -118,8 +156,23 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _a__
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _a_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a.js */ \"./src/a.js\");\n\n\nconsole.log(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\nupView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 1\nsetTimeout(() => {\n  upView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 2\n}, 2000);\n\nfunction upView(text) {\n  console.log(text)\n}\n\n\n//# sourceURL=webpack:///./src/index.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _a_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a.js */ "./src/a.js");
+
+
+console.log(_a_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+upView(_a_js__WEBPACK_IMPORTED_MODULE_0__["aVal"]); // 1
+setTimeout(() => {
+  upView(_a_js__WEBPACK_IMPORTED_MODULE_0__["aVal"]); // 2
+}, 2000);
+
+function upView(text) {
+  console.log(text)
+}
+
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=bundle.js.map
