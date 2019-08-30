@@ -1,5 +1,7 @@
 import defaultA, { aVal } from "./a.js";
 
+import(/* webpackChunkName: "async" */ "./async.js").then(({default: asyncFn}) => asyncFn());
+
 console.log(defaultA);
 
 upView(aVal); // 1

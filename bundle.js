@@ -1,8 +1,86 @@
+/**
+ * 方法修改 Map
+ *      __webpack_require__.m -> __webpack_require__.modules
+ *      __webpack_require__.c -> __webpack_require__.installedModules
+ *      __webpack_require__.d -> __webpack_require__.definePropertyGetter
+ *      __webpack_require__.r -> __webpack_require__.markAsESModule
+ *      __webpack_require__.e -> __webpack_require__.ensure
+ */
 /******/
 (function (modules) { // webpackBootstrap webpack启动方法
-    /******/ 	// The module cache
-    /******/
+    // install a JSONP callback for chunk loading
+    // 提取 chunk 并将 installedChunks[chunkId] 标记为 0 loaded
+    function webpackJsonpCallback(data) {
+        /******/
+        var chunkIds = data[0];
+        /******/
+        var moreModules = data[1];
+        /******/
+        /******/
+        /******/ 		// add "moreModules" to the modules object,
+        /******/ 		// then flag all "chunkIds" as loaded and fire callback
+        /******/
+        var moduleId, chunkId, i = 0, resolves = [];
+        /******/
+        for (; i < chunkIds.length; i++) {
+            /******/
+            chunkId = chunkIds[i];
+            /******/
+            if (installedChunks[chunkId]) {
+                /******/
+                resolves.push(installedChunks[chunkId][0]);
+                /******/
+            }
+            /******/
+            installedChunks[chunkId] = 0;
+            /******/
+        }
+        /******/
+        for (moduleId in moreModules) {
+            /******/
+            if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+                /******/
+                modules[moduleId] = moreModules[moduleId];
+                /******/
+            }
+            /******/
+        }
+        /******/
+        if (parentJsonpFunction) parentJsonpFunction(data);
+        /******/
+        /******/
+        while (resolves.length) {
+            /******/
+            resolves.shift()();
+            /******/
+        }
+        /******/
+        /******/
+    };
+
+
+    // The module cache
     var installedModules = {}; //  缓存
+    /******/
+    /******/ 	// object to store loaded and loading chunks 状态映射表
+    /******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
+    /******/ 	// Promise = chunk loading, 0 = chunk loaded
+    /******/
+    var installedChunks = {
+        /******/        "main": 0
+        /******/
+    };
+    /******/
+    /******/
+    /******/
+    /******/ 	// script path function
+    /******/
+    function jsonpScriptSrc(chunkId) {
+        /******/
+        return __webpack_require__.p + "" + chunkId + ".bundle.js"
+        /******/
+    }
+
     /******/
     /******/ 	// The require function
     /******/
@@ -37,6 +115,115 @@
         return module.exports;
         /******/
     }
+
+    /******/
+    /******/ 	// This file contains only the entry chunk.
+    /******/ 	// The chunk loading function for additional chunks
+    /******/
+    __webpack_require__.ensure = function requireEnsure(chunkId) {
+        /******/
+        var promises = [];
+        /******/
+        /******/
+        /******/ 		// JSONP chunk loading for javascript
+        /******/
+        /******/
+        var installedChunkData = installedChunks[chunkId]; // 检查是否已加载
+        /******/
+        if (installedChunkData !== 0) { // 0 means "already installed".
+            /******/
+            /******/ 			// a Promise means "currently loading".
+            /******/
+            if (installedChunkData) { // 正在获取
+                /******/
+                promises.push(installedChunkData[2]);
+                /******/
+            } else {
+                /******/ 				// setup Promise in chunk cache
+                /******/
+                var promise = new Promise(function (resolve, reject) {
+                    /******/
+                    installedChunkData = installedChunks[chunkId] = [resolve, reject];
+                    /******/
+                });
+                /******/
+                promises.push(installedChunkData[2] = promise);
+                /******/
+                /******/ 				// start chunk loading
+                /******/
+                var script = document.createElement('script');
+                /******/
+                var onScriptComplete;
+                /******/
+                /******/
+                script.charset = 'utf-8'; // 不需要设置了，因为必须与 html 保持一致
+                /******/
+                script.timeout = 120;
+                /******/
+                if (__webpack_require__.nc) {
+                    /******/
+                    script.setAttribute("nonce", __webpack_require__.nc);
+                    /******/
+                }
+                /******/
+                script.src = jsonpScriptSrc(chunkId);
+                /******/
+                /******/ 				// create error before stack unwound to get useful stacktrace later
+                /******/
+                var error = new Error();
+                /******/
+                onScriptComplete = function (event) {
+                    /******/ 					// avoid mem leaks in IE.
+                    /******/
+                    script.onerror = script.onload = null;
+                    /******/
+                    clearTimeout(timeout);
+                    /******/
+                    var chunk = installedChunks[chunkId];
+                    /******/
+                    if (chunk !== 0) { // 如果没有成功执行 jsonP Cb 则 还是为 [resolve, reject]
+                        /******/
+                        if (chunk) {
+                            /******/
+                            var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+                            /******/
+                            var realSrc = event && event.target && event.target.src;
+                            /******/
+                            error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+                            /******/
+                            error.name = 'ChunkLoadError';
+                            /******/
+                            error.type = errorType;
+                            /******/
+                            error.request = realSrc;
+                            /******/
+                            chunk[1](error);
+                            /******/
+                        }
+                        /******/
+                        installedChunks[chunkId] = undefined;
+                        /******/
+                    }
+                    /******/
+                };
+                /******/
+                var timeout = setTimeout(function () {
+                    /******/
+                    onScriptComplete({type: 'timeout', target: script});
+                    /******/
+                }, 120000);
+                /******/
+                script.onerror = script.onload = onScriptComplete;
+                /******/
+                document.head.appendChild(script);
+                /******/
+            }
+            /******/
+        }
+        /******/
+        return Promise.all(promises);
+        /******/
+    };
 
     /******/
     /******/
@@ -130,6 +317,26 @@
     /******/
     __webpack_require__.p = "";
     /******/
+    /******/ 	// on error function for async loading
+    /******/
+    __webpack_require__.oe = function (err) {
+        console.error(err);
+        throw err;
+    };
+    /******/
+    /******/
+    var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
+    /******/
+    var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+    /******/
+    jsonpArray.push = webpackJsonpCallback;
+    /******/
+    jsonpArray = jsonpArray.slice();
+    /******/
+    for (var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+    /******/
+    var parentJsonpFunction = oldJsonpFunction;
+    /******/
     /******/
     /******/ 	// Load entry module and return exports
     /******/
@@ -147,7 +354,6 @@
     /***/ (function (module, __webpack_exports__, __webpack_require__) {
 
         "use strict";
-        // eval("__webpack_require__.markAsESModule(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.definePropertyGetter(__webpack_exports__, \"aVal\", function() { return aVal; });\n/* harmony export (binding) */ __webpack_require__.definePropertyGetter(__webpack_exports__, \"aFn\", function() { return aFn; });\n/* harmony export (binding) */ __webpack_require__.definePropertyGetter(__webpack_exports__, \"aFnVar\", function() { return aFnVar; });\n/* harmony import */ var _b__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./b */ \"./src/b.js\");\n\r\n\r\nObject(_b__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\r\n\r\nlet aVal = 1;\r\n\r\nPromise.resolve().then(() => {\r\n  aVal = 2;\r\n});\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (2);\r\n\r\nfunction aFn() {\r\n    console.log('afn');\r\n}\r\n\r\nvar aFnVar = () => {\r\n    console.log('aFnVar');\r\n};\r\n\n\n//# sourceURL=webpack:///./src/a.js?");
         // region eval
         __webpack_require__.markAsESModule(__webpack_exports__);
         /* harmony export (binding) */
@@ -198,7 +404,6 @@
     /***/ (function (module, __webpack_exports__, __webpack_require__) {
 
         "use strict";
-        // eval("__webpack_require__.markAsESModule(__webpack_exports__);\n/* harmony import */ var _a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a */ \"./src/a.js\");\n\r\n\r\nObject(_a__WEBPACK_IMPORTED_MODULE_0__[\"aFn\"])();\r\ntry {\r\n    Object(_a__WEBPACK_IMPORTED_MODULE_0__[\"aFnVar\"])();\r\n} catch (e) {\r\n    console.error(e);\r\n}\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (() => {\r\n    console.log('b default')\r\n});\r\n\n\n//# sourceURL=webpack:///./src/b.js?");
         // region eval
         __webpack_require__.markAsESModule(__webpack_exports__);
         /* harmony import */
@@ -229,7 +434,6 @@
     /***/ (function (module, __webpack_exports__, __webpack_require__) { // this === __webpack_exports__
 
         "use strict";
-        // eval("__webpack_require__.markAsESModule(__webpack_exports__);\n/* harmony import */ var _a_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./a.js */ \"./src/a.js\");\n\n\nconsole.log(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"]);\n\nupView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 1\nsetTimeout(() => {\n  upView(_a_js__WEBPACK_IMPORTED_MODULE_0__[\"aVal\"]); // 2\n}, 2000);\n\nfunction upView(text) {\n  console.log(text)\n}\n\n\n//# sourceURL=webpack:///./src/index.js?");
         // region eval
         __webpack_require__.markAsESModule(__webpack_exports__);
         /* harmony import */
@@ -241,6 +445,8 @@
         //     Symbol(Symbol.toStringTag): "Module"
         //     __esModule: true
         //     get aVal: ƒ ()
+
+        __webpack_require__.ensure(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./async.js */ "./src/async.js")).then(({default: asyncFn}) => asyncFn());
 
         console.log(_a_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
 

@@ -1,0 +1,1 @@
+{"version":3,"file":"async.bundle.js","sources":["webpack:///./src/async.js"],"sourcesContent":["console.log(\"async\");\r\n\r\nexport default function () {\r\n    console.log(\"async export\");\r\n}"],"mappings":";;;;;;;;;;AAAA;AAAA;AACA;AACA;AACA;AACA;;;;A","sourceRoot":""}
